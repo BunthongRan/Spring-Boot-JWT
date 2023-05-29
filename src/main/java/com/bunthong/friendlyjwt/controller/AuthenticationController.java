@@ -1,8 +1,9 @@
 package com.bunthong.friendlyjwt.controller;
 
 import com.bunthong.friendlyjwt.service.TokenService;
-import org.apache.el.parser.Token;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,9 +14,8 @@ public class AuthenticationController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/token")
+    @GetMapping ("/token")
     public String getToken(Authentication authentication){
-
         String token = tokenService.generateToken(authentication);
                 return token;
     }

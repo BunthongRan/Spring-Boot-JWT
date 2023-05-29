@@ -1,5 +1,6 @@
 package com.bunthong.friendlyjwt.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
@@ -16,13 +17,14 @@ import java.util.stream.Collectors;
 public class TokenService {
 //inject the jwtEncoder service
     private JwtEncoder jwtEncoder;
+    @Autowired
     public TokenService(JwtEncoder jwtEncoder){
         this.jwtEncoder = jwtEncoder;
     }
     public String generateToken(Authentication authentication){
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(""));
+                .collect(Collectors.joining(" "));
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
@@ -32,9 +34,5 @@ public class TokenService {
                 .claim("scope", scope)
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-
-
     }
-
-
 }
